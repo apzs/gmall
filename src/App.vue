@@ -12,6 +12,9 @@ import Header from "./components/Header"
 import Footer from "./components/Footer"
 export default {
   name: 'App',
+  mounted(){
+    this.$store.dispatch("categoryList");
+  },
   components: {
     Header,Footer
   }

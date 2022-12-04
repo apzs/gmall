@@ -7,6 +7,9 @@
         <Floor/>
         <Floor/>
         <Brand/>
+        <!-- <button @click="add">点击我加上1</button>
+        <span>仓库的数量{{count}}</span>
+        <button>点击我减去1</button> -->
     </div>
 </template>
 
@@ -18,8 +21,10 @@ import Like from "@/pages/Home/Like"
 import Floor from "@/pages/Home/Floor"
 import Brand from "@/pages/Home/Brand"
 
+// import {mapState} from 'vuex';
+
 export default {
-    name: '',
+    name: 'Home',
     return: {
         
     },
@@ -30,7 +35,16 @@ export default {
         Like,
         Floor,
         Brand
-    }
+    },
+    // computed:{
+    //     ...mapState(['count'])
+    // },
+    // methods: {
+    //     add(){
+    //         //this.$store.dispatch("add"); // 调用action里的add()
+    //         this.$store.commit("ADD") // 调用mutations里的 ADD(state, count)
+    //     }
+    // }
 }
 </script>
 <style scoped>

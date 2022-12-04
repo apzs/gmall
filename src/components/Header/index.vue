@@ -52,13 +52,17 @@ export default {
         methods: {
             goSearch(){
                 // this.$router.push(`/search/${this.keyword}?k=${this.keyword.toUpperCase()}`)
-                this.$router.push({
+                let location = {
                     name: "search",
-                    params: {keyword:this.keyword},
+                    params: {keyword:this.keyword || undefined},
                     // 解决传递的参数为空串导致 /search 丢失的问题
                     // params: '' || undefined,
-                    query: {k: this.keyword.toUpperCase()}
-                })
+                    //query: {k: this.keyword.toUpperCase()}
+                }
+                if(this.$route.query){
+                    location.query = this.$route.query;
+                }
+                this.$router.push(location)
             }
         },
 }
