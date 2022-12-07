@@ -6,14 +6,20 @@ import router from '@/router'
 import TypeNav from '@/components/TypeNav'
 // 引入仓库
 import store from "@/store"
+// 轮播图
+import Carousel from "@/components/Carousel"
 
 // 注册全局组件
 //第一个参数：全局组件名字，第二个参数：全局组件
 Vue.component(TypeNav.name,TypeNav)
 
+Vue.component(Carousel.name,Carousel)
+
 Vue.config.productionTip = false
 
+import '@/mock/mockServe'
 
+import "swiper/css/swiper.css";
 
 new Vue({
   render: h => h(App),
