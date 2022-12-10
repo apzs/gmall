@@ -1,5 +1,5 @@
 <template>
-     <header class="header">
+    <header class="header">
         <!-- 头部的第一行 -->
         <div class="top">
             <div class="container">
@@ -43,32 +43,37 @@
 <script>
 
 export default {
-        name: "",
-        data(){
-            return {
-                keyword : '',
+    name: "",
+    data() {
+        return {
+            keyword: '',
+        }
+    },
+    methods: {
+        goSearch() {
+            // this.$router.push(`/search/${this.keyword}?k=${this.keyword.toUpperCase()}`)
+            let location = {
+                name: "search",
+                params: { keyword: this.keyword || undefined },
+                // 解决传递的参数为空串导致 /search 丢失的问题
+                // params: '' || undefined,
+                //query: {k: this.keyword.toUpperCase()}
             }
-        },
-        methods: {
-            goSearch(){
-                // this.$router.push(`/search/${this.keyword}?k=${this.keyword.toUpperCase()}`)
-                let location = {
-                    name: "search",
-                    params: {keyword:this.keyword || undefined},
-                    // 解决传递的参数为空串导致 /search 丢失的问题
-                    // params: '' || undefined,
-                    //query: {k: this.keyword.toUpperCase()}
-                }
-                if(this.$route.query){
-                    location.query = this.$route.query;
-                }
-                this.$router.push(location)
+            if (this.$route.query) {
+                location.query = this.$route.query;
             }
-        },
+            this.$router.push(location)
+        }
+    },
+    mounted(){
+        this.$bus.$on("clear",()=>{
+            this.keyword = ''
+        })
+    }
 }
 </script>
 <style scoped lang="less">
-    .header {
+.header {
     &>.top {
         background-color: #eaeaea;
         height: 30px;

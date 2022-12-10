@@ -8,12 +8,14 @@ import TypeNav from '@/components/TypeNav'
 import store from "@/store"
 // 轮播图
 import Carousel from "@/components/Carousel"
+// 分页器
+import Pagination from "@/components/Pagination"
 
 // 注册全局组件
 //第一个参数：全局组件名字，第二个参数：全局组件
 Vue.component(TypeNav.name,TypeNav)
-
 Vue.component(Carousel.name,Carousel)
+Vue.component(Pagination.name,Pagination)
 
 Vue.config.productionTip = false
 
@@ -23,6 +25,10 @@ import "swiper/css/swiper.css";
 
 new Vue({
   render: h => h(App),
+  // 配置$bus全局事件总线
+  beforeMount(){
+    Vue.prototype.$bus = this
+  },
   // 注册路由信息，注册后不管是路由组件还是非路由组件，身上都有$route和$router属性
   // $route一般用于获取路径、params query参数；
   // $router一般用于跳转路径，push replace等
