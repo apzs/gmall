@@ -24,25 +24,27 @@
               {{ searchParams.trademark.split(":")[1] }}<i>×</i>
             </li>
             <!-- 品牌的售卖属性 -->
-            <li class="with-x" v-for="(props,index) in searchParams.props" :key="index" @click="removeProps(index)">
+            <li class="with-x" v-for="(props, index) in searchParams.props" :key="index" @click="removeProps(index)">
               {{ props.split(":")[1] }}<i>×</i>
             </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector @trademarkInfo="trademarkInfo" @attrInfo="attrInfo"/>
+        <SearchSelector @trademarkInfo="trademarkInfo" @attrInfo="attrInfo" />
 
         <!--details-->
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li :class="{active:isOne}" @click="changeOrder('1')">
-                  <a href="#">综合<span v-show="isOne" class="iconfont icon-down" :class="{'icon-up':isAsc,'icon-down':isDesc}"></span></a>
+                <li :class="{ active: isOne }" @click="changeOrder('1')">
+                  <a href="#">综合<span v-show="isOne" class="iconfont icon-down"
+                      :class="{ 'icon-up': isAsc, 'icon-down': isDesc }"></span></a>
                 </li>
-                <li :class="{active:isTwo}" @click="changeOrder('2')">
-                  <a href="#">价格<span v-show="isTwo" class="iconfont icon-down" :class="{'icon-up':isAsc,'icon-down':isDesc}"></span></a>
+                <li :class="{ active: isTwo }" @click="changeOrder('2')">
+                  <a href="#">价格<span v-show="isTwo" class="iconfont icon-down"
+                      :class="{ 'icon-up': isAsc, 'icon-down': isDesc }"></span></a>
                 </li>
               </ul>
             </div>
@@ -52,9 +54,9 @@
               <li class="yui3-u-1-5" v-for="good in goodsList" :key="good.id">
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a href="item.html" target="_blank">
+                    <router-link :to="`/detail/${good.id}`">
                       <img :src="good.defaultImg" />
-                    </a>
+                    </router-link>
                   </div>
                   <div class="price">
                     <strong>
@@ -76,7 +78,11 @@
               </li>
             </ul>
           </div>
-          <Pagination />
+          <Pagination 
+            :pageNo="searchParams.pageNo" 
+            :pageSize="searchParams.pageSize" 
+            :total="total" :continues="7"
+            @getPageNo="getPageNo" />
         </div>
       </div>
     </div>
@@ -85,7 +91,7 @@
 
 <script>
 import SearchSelector from './SearchSelector/SearchSelector'
-import { mapGetters } from 'vuex';
+import { mapGetters,mapState } from 'vuex';
 export default {
   name: 'Search',
   data() {
@@ -113,14 +119,14 @@ export default {
     // this.searchParams.category3Id = this.$route.query.category3Id
     // this.searchParams.keyword = this.$route.params.keyword
     Object.assign(this.searchParams, this.$route.query, this.$route.params)
-  },
-  mounted() {
     this.getData();
   },
   methods: {
+    // 获取数据
     getData() {
       this.$store.dispatch("getSearchList", this.searchParams)
     },
+    // 清除分类id和分类名
     removeCategoryName() {
       this.clearCategoryId()
       this.searchParams.categoryName = undefined
@@ -130,6 +136,7 @@ export default {
         params: this.$route.params
       })
     },
+    // 移除关键字
     removeKeyword() {
       this.searchParams.keyword = undefined
       this.getData()
@@ -137,65 +144,82 @@ export default {
       this.$bus.$emit("clear")
       this.$router.push({ name: "search", query: this.$route.query })
     },
+    // 清除分类id
     clearCategoryId() {
       // 发请求时不带为undefined的属性
       this.searchParams.category1Id = undefined
       this.searchParams.category2Id = undefined
       this.searchParams.category3Id = undefined
     },
+    // 添加品牌信息
     trademarkInfo(trademark) {
       this.searchParams.trademark = trademark.tmId + ":" + trademark.tmName
       this.getData()
     },
-    removeTrademark(){
+    // 删除品牌信息
+    removeTrademark() {
       this.searchParams.trademark = undefined
       this.getData()
     },
-    attrInfo(attr,attrValue){
+    // 添加售卖属性
+    attrInfo(attr, attrValue) {
       let props = `${attr.attrId}:${attrValue}:${attr.attrName}`
-      if(!this.searchParams.props.includes(props)){
+      if (!this.searchParams.props.includes(props)) {
         this.searchParams.props.push(props)
         this.getData()
       }
     },
-    removeProps(index){
+    // 移除售卖属性
+    removeProps(index) {
       //let index = this.searchParams.props.indexOf(props)
-      this.searchParams.props.splice(index,1)
+      this.searchParams.props.splice(index, 1)
       this.getData()
     },
-    changeOrder(flag){
+    // 排序
+    changeOrder(flag) {
       let originFlag = this.searchParams.order.split(':')[0]
       let originSort = this.searchParams.order.split(':')[1]
       // console.log(flag,originFlag,originSort);
       // console.log(flag == originFlag);
       // 点的是同一个排序字段，则改变排序方式(升序/降序)
-      if(flag == originFlag){
+      if (flag == originFlag) {
         // 如果是升序，就改变为降序
-        if(originSort == 'asc'){
+        if (originSort == 'asc') {
           this.searchParams.order = flag + ":desc"
-        }else{
+        } else {
           this.searchParams.order = flag + ":asc"
         }
-      // 点的不是同一个字段，则改变字段
-      }else {
+        // 点的不是同一个字段，则改变字段
+      } else {
         this.searchParams.order = flag + ":asc"
       }
       this.getData()
-    }
+    },
+    // 子组件触发自定义事件，获取当前页
+    getPageNo(pageNo) {
+      this.searchParams.pageNo = pageNo
+      this.getData()
+    },
   },
   computed: {
-    ...mapGetters(['goodsList', 'trademarkList', 'attrsList']),
+    ...mapGetters(['goodsList', 'trademarkList', 'attrsList','total']),
+    // ...mapState({
+    //   total: state => {
+    //     // console.log(state.search.searchList.total);
+    //     return state.search.searchList.total
+    //   }
+    // }),
     isOne() {
       return this.searchParams.order.includes('1')
     },
-    isTwo(){
+    isTwo() {
       return this.searchParams.order.includes('2')
     },
-    isAsc(){
+    isAsc() {
       return this.searchParams.order.includes('asc')
     },
-    isDesc(){
-      this.searchParams.order.includes('desc')
+    isDesc() {
+      return this.searchParams.order.includes('desc')
     },
   },
   watch: {

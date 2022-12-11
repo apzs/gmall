@@ -38,3 +38,5 @@ export const getSearchInfo = (data)=>requests({
     method: 'post',
     data: data
 })
+
+export const reqGoodsInfo = (skuId)=>requests.get(`/item/${skuId}`)

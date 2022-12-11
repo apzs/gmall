@@ -2,11 +2,8 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 // 配置使用路由插件
 Vue.use(VueRouter);
-// 引入路由组件
-import Home from '@/pages/Home'
-import Login from '@/pages/Login'
-import Register from '@/pages/Register'
-import Search from '@/pages/Search'
+
+import routes from './routes';
 
 // 先把VueRouter原型对象的push保存一份
 let originPush = VueRouter.prototype.push;
@@ -36,49 +33,15 @@ VueRouter.prototype.replace=function(location,resolve,reject){
 
 // 配置路由
 export default new VueRouter({
-    routes: [
-        {
-            name: "home",
-            path: "/home",
-            component: Home,
-            // 路由元信息（添加一些额外的信息）
-            meta: {show: true}
-        },
-        {
-            name: "login",
-            path: "/login",
-            component: Login,
-            meta: {show: false}
-        },
-        {
-            name: "register",
-            path: "/register",
-            component: Register,
-            meta: {show: false}
-        },
-        {
-            name: "search",
-            // 加个 ? 表示params可传递或不传递
-            path: "/search/:keyword?",
-            component: Search,
-            meta: {show: true},
-            // 第一种：布尔值写法 - 只能传params参数,不能传query参数
-            // props: true,
-
-            // 第二种：对象写法,额外给路由组件传递一些props
-            // props: {a:1,b:2},
-
-            // 第三种：函数写法 （最常见） params参数、query参数，通过props传递给路由组件
-            // props:($route)=>{
-            //     return {keyword:$route.params.keyword,k:$route.query.k};
-            // },
-            // 简写形式
-            props:($route)=>({keyword:$route.params.keyword,k:$route.query.k})
-        },
-        // 重定向
-        {
-            path: '*',
-            redirect: "/home"
+    routes: routes,
+    scrollBehavior(to,from,savedPosition){
+        
+        if(from.fullPath.includes("/search") && to.fullPath.includes("/detail")){
+            return {y: 0};
         }
-    ]
+        return {}
+        //返回的这个y=0，代表的滚动条在最上方
+        
+        
+    }
 })
