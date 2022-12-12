@@ -40,3 +40,9 @@ export const getSearchInfo = (data)=>requests({
 })
 
 export const reqGoodsInfo = (skuId)=>requests.get(`/item/${skuId}`)
+
+// 将产品添加到购物车中，或修改某个产品的数量
+export const reqAddOrUpdateShopCart = (skuId,skuNum) => requests({
+    url: `/cart/addToCart/${skuId}/${skuNum}`,
+    method: "post"
+})
