@@ -1,5 +1,5 @@
 import { reqGoodsInfo,reqAddOrUpdateShopCart } from "@/api"
-
+import {getUUID} from '@/utils/uuid_token'
 const actions = {
     // 获取产品信息
     async getGoodInfo({commit},skuId){
@@ -14,6 +14,11 @@ const actions = {
     // 服务器写入数据成功，并没有返回其他的数据，只是返回code=200，代表这次操作成功
     async addOrUpdateShopCart({commit},{skuId,skuNum}){
         let result = await reqAddOrUpdateShopCart(skuId,skuNum)
+        if(result.code == 200){
+            return 'ok'
+        }else{
+          return  Promise.reject(new Error('fail'))
+        }
     }
 }
 
@@ -24,7 +29,8 @@ const mutations = {
 }
 
 const state = {
-    goodInfo: {}
+    goodInfo: {},
+    uuid_token: getUUID()
 }
 
 const getters = {

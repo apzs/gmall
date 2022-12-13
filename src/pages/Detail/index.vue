@@ -66,9 +66,8 @@
               <dl v-for="(spuSaleAttr, index) in spuSaleAttrList" :key="spuSaleAttr.id">
                 <dt class="title">{{ spuSaleAttr.saleAttrName }}</dt>
                 <dd changepirce="0" :class="{ active: spuSaleAttrValue.isChecked == 1 }"
-                  v-for="(spuSaleAttrValue, index) in spuSaleAttr.spuSaleAttrValueList" 
-                  :key="spuSaleAttrValue.id"
-                  @click="changeActive(spuSaleAttrValue,spuSaleAttr.spuSaleAttrValueList)">
+                  v-for="(spuSaleAttrValue, index) in spuSaleAttr.spuSaleAttrValueList" :key="spuSaleAttrValue.id"
+                  @click="changeActive(spuSaleAttrValue, spuSaleAttr.spuSaleAttrValueList)">
                   {{ spuSaleAttrValue.saleAttrValueName }}</dd>
               </dl>
             </div>
@@ -76,7 +75,7 @@
               <div class="controls">
                 <input autocomplete="off" class="itxt" v-model="skuNum" @change="changeSkuNum">
                 <a href="javascript:" class="plus" @click="skuNum++">+</a>
-                <a href="javascript:" class="mins" @click="skuNum>1?skuNum--:skuNum=1">-</a>
+                <a href="javascript:" class="mins" @click="skuNum > 1 ? skuNum-- : skuNum = 1">-</a>
               </div>
               <div class="add">
                 <!-- 以前咱们的路由跳转:从A路由跳转到B路由，这里在加入购物车，进行路由跳转之前，发请求 -->
@@ -342,7 +341,7 @@ export default {
     ImageList,
     Zoom
   },
-  data(){
+  data() {
     return {
       // 购买产品的数量
       skuNum: 1
@@ -359,7 +358,7 @@ export default {
   },
   methods: {
     // 产品的售卖属性值切换为高亮
-    changeActive(saleAttrValue,attr){
+    changeActive(saleAttrValue, attr) {
       // console.log(saleAttrValue,attr);
       // 遍历全部售卖属性值，isChecked为0就没有高亮了
       attr.forEach(item => {
@@ -368,16 +367,24 @@ export default {
       // 将刚刚点击的售卖属性设置为高亮
       saleAttrValue.isChecked = 1;
     },
-    changeSkuNum(event){
+    changeSkuNum(event) {
       let value = event.target.value * 1
-      if(isNaN(value)|| value < 1){
+      if (isNaN(value) || value < 1) {
         this.skuNum = 1;
-      }else {
+      } else {
         this.skuNum = parseInt(value)
       }
     },
-    addShopcar(){
-      this.$store.dispatch('addOrUpdateShopCart',{skuId:this.$route.params.skuId,skuNum:this.skuNum})
+    async addShopcar() {
+      try {
+        await this.$store.dispatch('addOrUpdateShopCart', { skuId: this.$route.params.skuId, skuNum: this.skuNum })
+        sessionStorage.setItem("SKUINFO",JSON.stringify(this.skuInfo))
+        this.$router.push({name: 'addCartSuccess',query:{skuNum:this.skuNum}})
+        // 下面这种方式也行，就是url显示的有点乱
+        // this.$router.push({name: 'addCartSuccess',query:{skuInfo:this.skuInfo,skuNum:this.skuNum}})
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 }
