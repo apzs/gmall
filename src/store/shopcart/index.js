@@ -35,7 +35,20 @@ const actions = {
         })
 
         return Promise.all(PromiseAll)
-    }
+    },
+    // 修改全部产品的选中状态
+    updateAllCartIsChecked({dispatch,state},isChecked){
+        let promiseAll = []
+        state.cartList[0].cartInfoList.forEach((item) => {
+            let promise = dispatch("updateCheckedById",{
+                skuId: item.skuId,
+                isChecked
+            })
+            promiseAll.push(promise)
+        })
+        
+        return Promise.all(promiseAll);
+    },
 }
 
 const mutations = {

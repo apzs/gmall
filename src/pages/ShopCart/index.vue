@@ -13,7 +13,7 @@
       <div class="cart-body">
         <ul class="cart-list" v-for="(cart, index) in cartInfoList" :key="cart.id">
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" :checked="cart.isChecked == 1" @change="updateChecked(cart,$event)">
+            <input type="checkbox" name="chk_list" :checked="cart.isChecked == 1" @change="updateChecked(cart, $event)">
           </li>
           <li class="cart-list-con2">
             <img :src="cart.imgUrl">
@@ -42,7 +42,8 @@
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox" :checked="isAllCheck">
+        <input class="chooseAll" type="checkbox" :checked="isAllCheck" :disabled="cartInfoList.length > 0"
+          @change="updateAllCartChecked">
         <span>全选</span>
       </div>
       <div class="option">
@@ -111,23 +112,33 @@ export default {
         console.log(error);
       }
     },
-    async updateChecked(cart,event){
-      let checked = event.target.checked ? "1":"0"
-      try{
-        await this.$store.dispatch('updateCheckedById',{skuId:cart.skuId,isChecked:checked})
+    async updateChecked(cart, event) {
+      let checked = event.target.checked ? "1" : "0"
+      try {
+        await this.$store.dispatch('updateCheckedById', { skuId: cart.skuId, isChecked: checked })
         this.getData()
-      }catch (error){
+      } catch (error) {
         console.log(error);
       }
     },
-    async deleteAllCheckedCart(){
-      try{
-        await threadId.$store.dispatch("deleteAllCheckedCart")
+    async deleteAllCheckedCart() {
+      try {
+        await this.$store.dispatch("deleteAllCheckedCart")
         this.getData()
-      }catch(error){
+      } catch (error) {
         console.log(error);
       }
-    }
+    },
+    async updateAllCartChecked(event) {
+      try {
+        let isChecked = event.target.checked ? "1" : "0"
+        await this.$store.dispatch("updateAllCartIsChecked", isChecked)
+        this.getData()
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
   },
   computed: {
     ...mapGetters(['cartList']),
