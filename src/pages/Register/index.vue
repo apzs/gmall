@@ -90,6 +90,7 @@ export default {
           await this.$store.dispatch("userRegister", { phone, code, password });
           this.$router.push('/login')
         }catch(error){
+          alert("手机号已被注册")
           console.log(error);
         }
       }else {

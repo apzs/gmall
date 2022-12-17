@@ -1,11 +1,11 @@
 <template>
     <div>
-        <TypeNav/>
-        <ListContainer/>
-        <Recommend/>
-        <Like/>
-        <Floor v-for="(floor,index) in floorList" :key="floor.id" :list='floor'/>
-        <Brand/>
+        <TypeNav />
+        <ListContainer />
+        <Recommend />
+        <Like />
+        <Floor v-for="(floor, index) in floorList" :key="floor.id" :list='floor' />
+        <Brand />
         <!-- <button @click="add">点击我加上1</button>
         <span>仓库的数量{{count}}</span>
         <button>点击我减去1</button> -->
@@ -20,14 +20,15 @@ import Like from "@/pages/Home/Like"
 import Floor from "@/pages/Home/Floor"
 import Brand from "@/pages/Home/Brand"
 
-import {mapState} from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
     name: 'Home',
     return: {
-        
+
     },
-    mounted(){
+    mounted() {
+        // 获取floor组件数据
         this.$store.dispatch("getFloorList")
     },
     components: {
@@ -38,9 +39,9 @@ export default {
         Floor,
         Brand
     },
-    computed:{
+    computed: {
         ...mapState({
-            floorList:state=>state.home.floorList
+            floorList: state => state.home.floorList
         })
     },
     // methods: {
@@ -52,5 +53,5 @@ export default {
 }
 </script>
 <style scoped>
-    
+
 </style>

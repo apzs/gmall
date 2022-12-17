@@ -6,6 +6,7 @@ import Search from '@/pages/Search'
 import Detail from '@/pages/Detail'
 import AddCartSuccess from '@/pages/AddCartSuccess'
 import ShopCart from '@/pages/ShopCart'
+import Trade from '@/pages/Trade'
 // 默认暴露
 export default [
     {
@@ -13,26 +14,26 @@ export default [
         path: "/home",
         component: Home,
         // 路由元信息（添加一些额外的信息）
-        meta: {show: true}
+        meta: { show: true }
     },
     {
         name: "login",
         path: "/login",
         component: Login,
-        meta: {show: false}
+        meta: { show: false }
     },
     {
         name: "register",
         path: "/register",
         component: Register,
-        meta: {show: false}
+        meta: { show: false }
     },
     {
         name: "search",
         // 加个 ? 表示params可传递或不传递
         path: "/search/:keyword?",
         component: Search,
-        meta: {show: true},
+        meta: { show: true },
         // 第一种：布尔值写法 - 只能传params参数,不能传query参数
         // props: true,
 
@@ -44,25 +45,31 @@ export default [
         //     return {keyword:$route.params.keyword,k:$route.query.k};
         // },
         // 简写形式
-        props:($route)=>({keyword:$route.params.keyword,k:$route.query.k})
+        props: ($route) => ({ keyword: $route.params.keyword, k: $route.query.k })
     },
     {
         name: 'detail',
         path: "/detail/:skuId?",
         component: Detail,
-        meta: {show:true}
+        meta: { show: true }
     },
     {
         name: 'addCartSuccess',
         path: '/addCartSuccess',
         component: AddCartSuccess,
-        meta: {show:true}
+        meta: { show: true }
     },
     {
         name: 'shopcart',
         path: '/shopcart',
         component: ShopCart,
-        meta: {show:true}
+        meta: { show: true }
+    },
+    {
+        name: "trade",
+        path: "/trade",
+        component: Trade,
+        meta: { show: true }
     },
     // 重定向
     {
