@@ -42,7 +42,7 @@
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox" :checked="isAllCheck" :disabled="cartInfoList.length > 0"
+        <input class="chooseAll" type="checkbox" :checked="isAllCheck" :disabled="cartInfoList.length <= 0"
           @change="updateAllCartChecked">
         <span>全选</span>
       </div>

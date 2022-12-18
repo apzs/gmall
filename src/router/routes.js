@@ -7,6 +7,12 @@ import Detail from '@/pages/Detail'
 import AddCartSuccess from '@/pages/AddCartSuccess'
 import ShopCart from '@/pages/ShopCart'
 import Trade from '@/pages/Trade'
+import Pay from '@/pages/Pay'
+import PaySuccess from '@/pages/PaySuccess'
+import Center from '@/pages/Center'
+// 引入二级路由组件
+import MyOrder from '@/pages/Center/myOrder'
+import GroupOrder from '@/pages/Center/groupOrder'
 // 默认暴露
 export default [
     {
@@ -70,6 +76,41 @@ export default [
         path: "/trade",
         component: Trade,
         meta: { show: true }
+    },
+    {
+        name: "pay",
+        path: "/pay",
+        component: Pay,
+        meta: { show: true }
+    },
+    {
+        name: "paysuccess",
+        path: "/paysuccess",
+        component: PaySuccess,
+        meta: { show: true }
+    },
+    {
+        name: "center",
+        path: "/center",
+        component: Center,
+        meta: { show: true },
+        children: [
+            {
+                name: "myorder",
+                path: "myorder",
+                component: MyOrder
+            },
+            {
+                name: "groupOrder",
+                path: "groupOrder",
+                component: GroupOrder
+            },
+            // 访问 /center 自动跳转到 /center/myorder （注意：要写在子组件里）
+            {
+                path: "/center",
+                redirect: '/center/myorder'
+            }
+        ]
     },
     // 重定向
     {

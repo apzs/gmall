@@ -26,27 +26,29 @@ const actions = {
         }
     },
     // 删除全部勾选的产品
-    deleteAllCheckedCart({dispatch,getters}){
+    deleteAllCheckedCart({ dispatch, getters }) {
         let PromiseAll = [];
-        getters.cartList.cartInfoList
-            .forEach(item=>{
-               let promise =  item.isChecked == 1 ? dispatch("deleteCartListBySkuId",item.skuId) : ''
-               PromiseAll.push(promise)
-        })
-
+        if (getters.cartList.cartInfoList) {
+            getters.cartList.cartInfoList
+                .forEach(item => {
+                    let promise = item.isChecked == 1 ? dispatch("deleteCartListBySkuId", item.skuId) : ''
+                    PromiseAll.push(promise)
+                })
+        }
         return Promise.all(PromiseAll)
     },
     // 修改全部产品的选中状态
-    updateAllCartIsChecked({dispatch,state},isChecked){
+    updateAllCartIsChecked({ dispatch, state }, isChecked) {
         let promiseAll = []
-        state.cartList[0].cartInfoList.forEach((item) => {
-            let promise = dispatch("updateCheckedById",{
-                skuId: item.skuId,
-                isChecked
+        if (state.cartList[0] && state.cartList[0].cartInfoList) {
+            state.cartList[0].cartInfoList.forEach((item) => {
+                let promise = dispatch("updateCheckedById", {
+                    skuId: item.skuId,
+                    isChecked
+                })
+                promiseAll.push(promise)
             })
-            promiseAll.push(promise)
-        })
-        
+        }
         return Promise.all(promiseAll);
     },
 }
