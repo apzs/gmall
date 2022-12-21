@@ -76,7 +76,13 @@ router.beforeEach(async (to, from, next) => {
         }
     } else {
         // 用户未登录
-        next()
+        let toPath = to.path;
+        // 未登录不能去 /trade 、/pay 、/paysuccess 页面
+        if(toPath.includes('/trade') || toPath.includes('/pay')){
+            next('/login?redirect='+toPath)
+        }else{
+            next()
+        }
     }
 })
 

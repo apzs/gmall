@@ -20,6 +20,14 @@
 <script>
   export default {
     name: 'PaySuccess',
+    beforeRouteEnter(to,from,next){
+      // 执行方法前，组件还未创建，不能使用this
+      if(from.path=='/pay'){
+        next()
+      }else{
+        next(false)
+      }
+    }
   }
 </script>
 

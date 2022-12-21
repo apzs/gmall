@@ -75,13 +75,31 @@ export default [
         name: "trade",
         path: "/trade",
         component: Trade,
-        meta: { show: true }
+        meta: { show: true },
+        beforeEnter: (to, from, next) => {
+            // 只允许从购物车页面跳转到结算页
+            if(from.path == '/shopcart'){
+                next()
+            }else{
+                next(false)
+                alert("只允许从购物车页面跳转到结算页")
+            }
+        },
     },
     {
         name: "pay",
         path: "/pay",
         component: Pay,
-        meta: { show: true }
+        meta: { show: true },
+        beforeEnter: (to, from, next) => {
+            // 只允许从结算页跳转到支付页
+            if(from.path == '/pay'){
+                next()
+            }else{
+                next(false)
+                alert("只允许从结算页跳转到支付页")
+            }
+        },
     },
     {
         name: "paysuccess",

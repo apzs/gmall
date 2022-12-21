@@ -80,7 +80,10 @@ export default {
       if (phone && password) {
         try {
           await this.$store.dispatch('userLogin', { phone, password })
-          this.$router.push("/home")
+          // 登录路由组件，看路由组件是否包含query参数
+          // 如果有跳转到query参数指定的路由，没有则跳转到 '/home'
+          let toPath = this.$route.query.redirect || '/home'
+          this.$router.push(toPath)
         } catch (error) {
           console.log(error);
           alert("用户名或密码错误")
