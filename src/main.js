@@ -26,12 +26,24 @@ Vue.prototype.$alert = MessageBox.alert;
 
 Vue.config.productionTip = false
 
+// 引入校验插件
+import '@/plugins/validate'
+
 import '@/mock/mockServe'
 
 import "swiper/css/swiper.css";
 
 // 统一接口api文件夹里的全部请求函数
 import * as API from '@/api'
+
+// 图片懒加载插件
+import VueLazyload from 'vue-lazyload'
+
+import loadimage from '@/assets/loadimage.gif'
+
+Vue.use(VueLazyload,{
+  loading: loadimage,
+})
 
 new Vue({
   render: h => h(App),

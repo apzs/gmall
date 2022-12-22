@@ -1,8 +1,8 @@
 // 引入路由组件
-import Home from '@/pages/Home'
+// import Home from '@/pages/Home'
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
-import Search from '@/pages/Search'
+// import Search from '@/pages/Search'
 import Detail from '@/pages/Detail'
 import AddCartSuccess from '@/pages/AddCartSuccess'
 import ShopCart from '@/pages/ShopCart'
@@ -18,7 +18,7 @@ export default [
     {
         name: "home",
         path: "/home",
-        component: Home,
+        component: () => import('@/pages/Home'),
         // 路由元信息（添加一些额外的信息）
         meta: { show: true }
     },
@@ -38,7 +38,7 @@ export default [
         name: "search",
         // 加个 ? 表示params可传递或不传递
         path: "/search/:keyword?",
-        component: Search,
+        component: () => import('@/pages/Search'),
         meta: { show: true },
         // 第一种：布尔值写法 - 只能传params参数,不能传query参数
         // props: true,
@@ -78,9 +78,9 @@ export default [
         meta: { show: true },
         beforeEnter: (to, from, next) => {
             // 只允许从购物车页面跳转到结算页
-            if(from.path == '/shopcart'){
+            if (from.path == '/shopcart') {
                 next()
-            }else{
+            } else {
                 next(false)
                 alert("只允许从购物车页面跳转到结算页")
             }
@@ -93,9 +93,9 @@ export default [
         meta: { show: true },
         beforeEnter: (to, from, next) => {
             // 只允许从结算页跳转到支付页
-            if(from.path == '/pay'){
+            if (from.path == '/pay') {
                 next()
-            }else{
+            } else {
                 next(false)
                 alert("只允许从结算页跳转到支付页")
             }
